@@ -1,0 +1,34 @@
+[
+  {
+    "path": "ca",
+    "name": "Canada"
+  },
+  {
+    "path": "us",
+    "name": "United States"
+  },
+  {
+    "path": "de",
+    "name": "Germany"
+  },
+  {
+    "path": "fr",
+    "name": "France"
+  },
+  {
+    "path": "jp",
+    "name": "Japan"
+  },
+  {
+    "path": "ng",
+    "name": "Nigeria"
+  },
+  {
+    "path": "cl",
+    "name": "Chile"
+  },
+  {
+    "path": "cn",
+    "name": "China"
+  }
+]

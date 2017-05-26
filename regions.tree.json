@@ -1,0 +1,105 @@
+[
+  {
+    "path": "ca",
+    "name": "Canada",
+    "children": [
+      {
+        "path": "ca/on",
+        "name": "Ontario",
+        "children": [
+          {
+            "path": "ca/on/tor",
+            "name": "Toronto"
+          }
+        ]
+      },
+      {
+        "path": "ca/qc",
+        "name": "Quebec",
+        "children": [
+          {
+            "path": "ca/qc/mtl",
+            "name": "Montreal"
+          },
+          {
+            "path": "ca/qc/shr",
+            "name": "Sherbrooke"
+          },
+          {
+            "path": "ca/qc/lvl",
+            "name": "Laval"
+          }
+        ]
+
+      },
+      {
+        "path": "ca/ab",
+        "name": "Alberta"
+      }
+    ]
+  },
+  {
+    "path": "us",
+    "name": "United States",
+    "children": [
+      {
+        "path": "us/ca",
+        "name": "California",
+        "children": [
+          {
+            "path": "us/ca/la",
+            "name": "Los Angeles"
+          },
+          {
+            "path": "us/ca/sf",
+            "name": "San Francisco"
+          }
+        ]
+      },
+      {
+        "path": "us/ny",
+        "name": "New York"
+      }
+    ]
+  },
+  {
+    "path": "de",
+    "name": "Germany"
+  },
+  {
+    "path": "fr",
+    "name": "France"
+  },
+  {
+    "path": "jp",
+    "name": "Japan",
+    "children": [
+      {
+        "path": "jp/hok",
+        "name": "Hokkaido"
+      }
+    ]
+  },
+  {
+    "path": "ng",
+    "name": "Nigeria"
+  },
+  {
+    "path": "cl",
+    "name": "Chile"
+  },
+  {
+    "path": "cn",
+    "name": "China",
+    "children": [
+      {
+        "path": "cn/fj",
+        "name": "Fujian"
+      },
+      {
+        "path": "cn/hn",
+        "name": "Hunan"
+      }
+    ]
+  }
+]
