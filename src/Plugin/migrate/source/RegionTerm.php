@@ -30,14 +30,28 @@ class RegionTerm extends SourcePluginBase {
     $file = file_get_contents($this->configuration['path']);
     $json = json_decode($file, TRUE);
 
-    // Use the array key as the term ID.
-    foreach ($json as $key => $region) {
-      $json[$key]['path'] = '/regions/' . $json[$key]['path'];
-      $json[$key]['id'] = $key;
-      $json[$key]['region_parent'] = NULL;
+    $regions = $this->extractData($json);
+
+    dd($regions);
+    $regions = new ArrayObject($regions);
+    return $regions->getIterator();
+  }
+
+  public function extractData($array, $parent = NULL) {
+    $regions = [];
+    foreach ($array as $key => $region) {
+      $regions[] = [
+        'path' => '/regions/' . $region['path'],
+        'name' => $region['name'],
+        'parent' => $parent
+      ];
+      // Include the children.
+      if (isset($region['children'])) {
+        $regions = array_merge($regions, $this->extractData($region['children'], $region['name']));
+      }
     }
-    $json = new ArrayObject($json);
-    return $json->getIterator();
+
+    return $regions;
   }
 
   /**
@@ -80,7 +94,7 @@ class RegionTerm extends SourcePluginBase {
      * columns in the map tables that track processed items.
      */
     return [
-      'id' => [
+      'name' => [
         'type' => 'string',
       ],
     ];
