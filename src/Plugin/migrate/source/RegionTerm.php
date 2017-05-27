@@ -32,8 +32,9 @@ class RegionTerm extends SourcePluginBase {
 
     // Use the array key as the term ID.
     foreach ($json as $key => $region) {
-      $json[$key]['path'] = '/' . $json[$key]['path'];
+      $json[$key]['path'] = '/regions/' . $json[$key]['path'];
       $json[$key]['id'] = $key;
+      $json[$key]['region_parent'] = NULL;
     }
     $json = new ArrayObject($json);
     return $json->getIterator();
@@ -60,6 +61,7 @@ class RegionTerm extends SourcePluginBase {
       'id' => $this->t('Source ID'),
       'name' => $this->t('name'),
       'path' => $this->t('path'),
+      'region_parent' => $this->t('Region parent'),
     ];
 
     return $fields;
