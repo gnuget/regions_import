@@ -1,4 +1,4 @@
-id: regions
+id: regions_flat
 label: Migrate the regions.flat.json file
 migration_group: regions
 
@@ -76,7 +76,4 @@ migration_dependencies: {}
 # removed when the migration which installed them is uninstalled. To have your
 # migrations uninstalled with your migration module, add an enforced dependency
 # on your module.
-dependencies:
-  enforced:
-    module:
-      - migrate_example
+dependencies: {}

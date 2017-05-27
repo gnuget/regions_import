@@ -1,8 +1,9 @@
 <?php
 
-namespace Drupal\migrate_example\Plugin\migrate\source;
+namespace Drupal\regions_import\Plugin\migrate\source;
 
 use Drupal\migrate\Plugin\migrate\source\SourcePluginBase;
+use \ArrayObject;
 
 /**
  * This is an example of a simple SQL-based source plugin. Source plugins are
@@ -27,13 +28,15 @@ class RegionTerm extends SourcePluginBase {
   public function initializeIterator() {
     // File handler using our custom header-rows-respecting extension of SPLFileObject.
     $file = file_get_contents($this->configuration['path']);
-    $json = json_decode($file);
+    $json = json_decode($file, TRUE);
 
     // Use the array key as the term ID.
     foreach ($json as $key => $region) {
-      $json[$key]->id = $key;
+      $json[$key]['path'] = '/' . $json[$key]['path'];
+      $json[$key]['id'] = $key;
     }
-    return $json;
+    $json = new ArrayObject($json);
+    return $json->getIterator();
   }
 
   /**
@@ -82,7 +85,3 @@ class RegionTerm extends SourcePluginBase {
   }
 
 }
-
-
-$cosa = new RegionTerm();
-print_r($cosa->initializeIterator());
