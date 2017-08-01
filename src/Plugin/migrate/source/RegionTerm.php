@@ -32,7 +32,6 @@ class RegionTerm extends SourcePluginBase {
 
     $regions = $this->extractData($json);
 
-    dd($regions);
     $regions = new ArrayObject($regions);
     return $regions->getIterator();
   }

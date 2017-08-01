@@ -8,7 +8,7 @@ migration_group: regions
 # src/Plugin/migrate/source/BeerTerm.php.
 source:
   plugin: region_term
-  path: '/Users/david/Projects/drupal_development/drupal8_contrib/web/modules/custom/regions_import/regions.tree.json'
+  path: '/var/www/drupalvm/drupal/web/modules/custom/regions_import/regions.tree.json'
   fields:
     - id
     - name

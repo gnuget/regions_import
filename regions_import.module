@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Regions Import module file.
+ */
+
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\regions_import\MigrateMessageLog;
 use Drupal\migrate_tools\MigrateExecutable;
