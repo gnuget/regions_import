@@ -1,35 +1,54 @@
 <?php
 
+use Drupal\migrate\Plugin\MigrationInterface;
+use Drupal\regions_import\MigrateMessageLog;
+use Drupal\migrate_tools\MigrateExecutable;
+
 /**
  * Implements hook_cron().
  */
-function hook_cron() {
+function regions_import_cron() {
+  $migration_names = [
+    'regions_tree',
+  ];
 
-  // Short-running operation example, not using a queue:
-  // Delete all expired records since the last cron run.
-  $expires = \Drupal::state()->get('mymodule.last_check', 0);
-  \Drupal::database()->delete('mymodule_table')->condition('expires', $expires, '>=')->execute();
-  \Drupal::state()->set('mymodule.last_check', REQUEST_TIME);
+  $migrations = drush_migrate_tools_migration_list(implode(',', $migration_names));
+  // Additional options.
+  $options = ['update' => TRUE];
 
-  // Long-running operation example, leveraging a queue:
-  // Queue news feeds for updates once their refresh interval has elapsed.
-  $queue = \Drupal::queue('aggregator_feeds');
-  $ids = \Drupal::entityManager()->getStorage('aggregator_feed')->getFeedIdsToRefresh();
-  foreach (Feed::loadMultiple($ids) as $feed) {
-    if ($queue->createItem($feed)) {
-
-      // Add timestamp to avoid queueing item more than once.
-      $feed->setQueuedTime(REQUEST_TIME);
-      $feed->save();
-    }
-  }
-  $ids = \Drupal::entityQuery('aggregator_feed')->condition('queued', REQUEST_TIME - 3600 * 6, '<')->execute();
-  if ($ids) {
-    $feeds = Feed::loadMultiple($ids);
-    foreach ($feeds as $feed) {
-      $feed->setQueuedTime(0);
-      $feed->save();
-    }
+  foreach ($migrations as $group_id => $migration_list) {
+    array_walk($migration_list, '_regions_import_tools_execute_migration', $options);
   }
 }
-?>
+
+/**
+ * Executes a single migration.
+ *
+ * Heavily based on the Drush method.
+ *
+ * @param \Drupal\migrate\Plugin\MigrationInterface $migration
+ *   The migration to execute.
+ * @param string $migration_id
+ *   The migration ID (not used, just an artifact of array_walk()).
+ * @param array $options
+ *   Additional options for the migration.
+ *
+ * @see _drush_migrate_tools_execute_migration
+ */
+function _regions_import_tools_execute_migration(MigrationInterface $migration, $migration_id, array $options = []) {
+  $log = new MigrateMessageLog();
+
+  // Always execute the requirements.
+  if ($required_IDS = $migration->get('requirements')) {
+    $manager = \Drupal::service('plugin.manager.config_entity_migration');
+    $required_migrations = $manager->createInstances($required_IDS);
+    $dependency_options = array_merge($options, ['is_dependency' => TRUE]);
+    array_walk($required_migrations, __FUNCTION__, $dependency_options);
+  }
+
+  if (!empty($options['update'])) {
+    $migration->getIdMap()->prepareUpdate();
+  }
+  $executable = new MigrateExecutable($migration, $log, $options);
+  $executable->import();
+}
