@@ -6,8 +6,19 @@ use Drupal\migrate_tools\MigrateExecutable;
 
 /**
  * Implements hook_cron().
+ *
+ * It must run at 2AM.
  */
 function regions_import_cron() {
+  // Pantheon's cron run every hour (see https://pantheon.io/docs/drupal-cron/),
+  // we want to run the migrations at 2AM, so we just need to check the hour.
+  $import_time = 2;
+  $request_time = \Drupal::time()->getRequestTime();
+  if (date('G', $request_time) != $import_time) {
+    return;
+  }
+
+  // @todo Add more migrations here.
   $migration_names = [
     'regions_tree',
   ];
